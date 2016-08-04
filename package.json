@@ -1,6 +1,6 @@
 {
   "name": "minecraft-log-slack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "send minecraft's log to slack",
   "main": "send_slack.js",
   "scripts": {
@@ -16,8 +16,17 @@
   "author": "roamer7038",
   "license": "MIT",
   "dependencies": {
-    "chokidar": "^1.6.0",
     "pm2": "^1.1.3",
-    "request": "^2.74.0"
-  }
+    "request": "^2.74.0",
+    "tail": "^1.1.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roamer7038/minecraft-log-slack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/roamer7038/minecraft-log-slack/issues"
+  },
+  "homepage": "https://github.com/roamer7038/minecraft-log-slack#readme"
 }

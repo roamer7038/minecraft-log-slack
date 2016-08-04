@@ -1,25 +1,24 @@
 'use strict';
 const request = require('request');
-const chokidar = require('chokidar');
-const execSync = require('child_process').execSync;
+const Tail = require('tail').Tail;
+// ログファイル
+const filename = "./logs/latest.log";
 // Slack API キー
-const slackApiKey = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+const slackApiKey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
-//chokidarの初期化
-var watcher = chokidar.watch('./logs/latest.log',{
-    ignored:/[\/\\]\./,
-    persistent:true
+const tail = new Tail(filename);
+
+// ログ監視
+tail.on('line', (data)=> {
+    console.log(data);
+    sendSlack(parseLogLine(data));
 });
 
-watcher.on('ready', ()=> {
-    console.log('ready watching...');
-    watcher.on('change', ()=> {
-        let tail = execSync('tail -n 1 ./logs/latest.log').toString().replace(/\r?\n/g,"");
-        let data = parseLogLine(tail);
-        if(data) sendSlack(data);
-    });
+tail.on('error', (data)=> {
+    console.log("error:", data);
 });
 
+// Slackに送る
 function sendSlack(data) {
     let channel = 'log';
     let text = null;
@@ -47,7 +46,7 @@ function sendSlack(data) {
     });
 }
 
-
+// 1行のログを連想配列に整理する
 function parseLogLine(line) {
     let matches = line.match(/\[([0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2})\]\s+\[([^\]]+)\]:\s+(.*?)$/i);
     if(matches) {
