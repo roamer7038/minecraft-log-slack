@@ -25,10 +25,10 @@ function sendSlack(data) {
     let text = null;
     switch (data.type) {
         case 'joined':
-            text = `${data.user} がゲームに参加しました`;
+            text = `${data.user} が参加しました`;
             break;
         case 'left':
-            text = `${data.user} がゲームから退出しました`;
+            text = `${data.user} が退出しました`;
             break;
         case 'chat':
             text = `<${data.user}> ${data.text}`;
