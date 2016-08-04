@@ -4,14 +4,15 @@ const Tail = require('tail').Tail;
 // ログファイル
 const filename = "./logs/latest.log";
 // Slack API キー
-const slackApiKey = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+const slackApiKey = '';
 
 const tail = new Tail(filename);
 
 // ログ監視
 tail.on('line', (data)=> {
     console.log(data);
-    sendSlack(parseLogLine(data));
+    let log = parseLogLine(data);
+    sendSlack(log);
 });
 
 tail.on('error', (data)=> {
@@ -38,11 +39,6 @@ function sendSlack(data) {
         url : `https://slack.com/api/chat.postMessage?token=${slackApiKey}&channel=%23${channel}&text=${text}&as_user=true`
     };
     request(options, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(body.name);
-        } else {
-            console.log('error: '+ response.statusCode + body);
-        }
     });
 }
 
