@@ -2,7 +2,7 @@
 const request = require('request');
 const Tail = require('tail').Tail;
 // ログファイル
-const filename = "./logs/latest.log";
+const filename = "../logs/latest.log";
 // Slack API キー
 const slackApiKey = '';
 
@@ -12,7 +12,7 @@ const tail = new Tail(filename);
 tail.on('line', (data)=> {
     console.log(data);
     let log = parseLogLine(data);
-    sendSlack(log);
+    if(log) sendSlack(log);
 });
 
 tail.on('error', (data)=> {
