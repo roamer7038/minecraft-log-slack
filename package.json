@@ -8,7 +8,6 @@
     "start": "pm2 start send_slack.js",
     "stop": "pm2 stop send_slack.js",
     "restart": "pm2 restart send_slack.js",
-    "startup": "pm2 startup send_slack && pm2 save",
     "watch": "pm2 start send_slack.js --watch",
     "pm2": "pm2"
   },
