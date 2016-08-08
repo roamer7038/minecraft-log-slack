@@ -80,7 +80,7 @@ function parseLogLine(line) {
         }
 
         // Start/Stop
-        else if(text.indexOf('Stopping server')!=-1 || text.match(/Done \([0-9]+.*[0-9]*\)\! For help, type \"help\" or \"\?\"/i)) {
+        else if(text.match(/^\s*Stopping the server/i) || text.match(/Done \([0-9]+.*[0-9]*\)\! For help, type \"help\" or \"\?\"/i)) {
             let breakdown = text.match(/(Stopping|Done)/i);
             let action = breakdown[1].toLowerCase().trim();
             return {
