@@ -10,7 +10,6 @@ const tail = new Tail(filename);
 
 // ログ監視
 tail.on('line', (data)=> {
-    console.log(data);
     let log = parseLogLine(data);
     if(log) sendSlack(log);
 });
@@ -25,13 +24,19 @@ function sendSlack(data) {
     let text = null;
     switch (data.type) {
         case 'joined':
-            text = `${data.user} が参加しました`;
+            text = `_${data.user}_ が参加しました`;
             break;
         case 'left':
-            text = `${data.user} が退出しました`;
+            text = `_${data.user}_ が退出しました`;
             break;
         case 'chat':
-            text = `<${data.user}> ${data.text}`;
+            text = `_<${data.user}>_ ${data.text}`;
+            break;
+        case 'start':
+            text = `>サーバが起動しました`;
+            break;
+        case 'stop':
+            text = `>サーバが停止しました`;
             break;
     }
     text = encodeURIComponent(text);
@@ -50,8 +55,19 @@ function parseLogLine(line) {
             type = matches[2].toLowerCase().trim(),
             text = matches[3].trim();
 
+        // Chat
+        if(type=='server thread/info' && text.match(/<([^>]+)>\s+(.*?)$/i)) {
+            let breakdown = text.match(/<([^>]+)>\s+(.*?)$/i);
+            return {
+                'time': time,
+                'type': 'chat',
+                'user': breakdown[1],
+                'text': breakdown[2]
+            }
+        }
+
         // Join/Leave
-        if(text.indexOf('joined the game')!=-1 || text.indexOf('left the game')!=-1) {
+        else if(text.indexOf('joined the game')!=-1 || text.indexOf('left the game')!=-1) {
             let breakdown = text.match(/(.*?)(joined|left) the game/i);
             let action = breakdown[2].toLowerCase().trim();
 
@@ -63,14 +79,14 @@ function parseLogLine(line) {
             };
         }
 
-        // Chat
-        else if(type=='server thread/info' && text.match(/<([^>]+)>\s+(.*?)$/i)) {
-            let breakdown = text.match(/<([^>]+)>\s+(.*?)$/i);
+        // Start/Stop
+        else if(text.indexOf('Stopping server')!=-1 || text.match(/Done \([0-9]+.*[0-9]*\)\! For help, type \"help\" or \"\?\"/i)) {
+            let breakdown = text.match(/(Stopping|Done)/i);
+            let action = breakdown[1].toLowerCase().trim();
             return {
                 'time': time,
-                'type': 'chat',
-                'user': breakdown[1],
-                'text': breakdown[2]
+                'type': (action=='stopping' ? 'stop' : 'start'),
+                'text': text
             }
         }
     }

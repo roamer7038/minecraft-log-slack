@@ -1,17 +1,16 @@
 {
   "name": "minecraft-log-slack",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "send minecraft's log to slack",
   "main": "send_slack.js",
   "scripts": {
     "test": "node send_slack.js",
-    "pm2-start": "node_modules/pm2/bin/pm2 start send_slack.js",
-    "pm2-stop": "node_modules/pm2/bin/pm2 stop send_slack.js",
-    "pm2-list": "node_modules/pm2/bin/pm2 list",
-    "pm2-restart": "node_modules/pm2/bin/pm2 restart send_slack.js",
-    "pm2-monit": "node_modules/pm2/bin/pm2 monit",
-    "pm2-log": "node_modules/pm2/bin/pm2 logs send_slack.js",
-    "pm2-flush": "node_modules/pm2/bin/pm2 flush"
+    "start": "pm2 start send_slack.js",
+    "stop": "pm2 stop send_slack.js",
+    "restart": "pm2 restart send_slack.js",
+    "startup": "pm2 startup send_slack && pm2 save",
+    "watch": "pm2 start send_slack.js --watch",
+    "pm2": "pm2"
   },
   "author": "roamer7038",
   "license": "MIT",
