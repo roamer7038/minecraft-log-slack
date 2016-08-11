@@ -21,24 +21,8 @@ tail.on('error', (data)=> {
 // Slackに送る
 function sendSlack(data) {
     let channel = 'log';
-    let text = null;
-    switch (data.type) {
-        case 'joined':
-            text = `${data.user} が参加しました`;
-            break;
-        case 'left':
-            text = `${data.user} が退出しました`;
-            break;
-        case 'chat':
-            text = `<${data.user}> ${data.text}`;
-            break;
-        case 'start':
-            text = `>サーバが起動しました`;
-            break;
-        case 'stop':
-            text = `>サーバが停止しました`;
-            break;
-    }
+    let text = getMessage(data, 'ja'); // ja or en
+    console.log(text);
     text = encodeURIComponent(text);
     const options= {
         url : `https://slack.com/api/chat.postMessage?token=${slackApiKey}&channel=%23${channel}&text=${text}&as_user=true`
@@ -61,7 +45,7 @@ function parseLogLine(line) {
             return {
                 'time': time,
                 'type': 'chat',
-                'user': breakdown[1],
+                'user': breakdown[1].trim(),
                 'text': breakdown[2]
             }
         }
@@ -89,6 +73,45 @@ function parseLogLine(line) {
                 'text': text
             }
         }
+
+        // Death
+        else if(type=='server thread/info' && text.match(/(\w+)? (.+)/i) ){
+            let breakdown = text.match(/(\w+)? (.+)/i);
+            return {
+                'time': time,
+                'type': 'death',
+                'user': breakdown[1].trim(),
+                'text': text
+            }
+        }
     }
     return false;
+}
+
+// 送信するメッセージを取得する。日本語(ja)か英語(en)
+function getMessage(data, lang='ja') {
+    let text = null;
+
+    switch (data.type) {
+        case 'joined':
+            text = (lang=='ja' ? `${data.user} が参加しました` : data.text);
+            break;
+        case 'left':
+            text = (lang=='ja' ? `${data.user} が退出しました` : data.text);
+            break;
+        case 'chat':
+            text = `<${data.user}> ${data.text}`;
+            break;
+        case 'start':
+            text = (lang=='ja' ? '>サーバが起動しました' : '>'+data.text);
+            break;
+        case 'stop':
+            text = (lang=='ja' ? '>サーバが停止しました' : '>'+data.text);
+            break;
+        case 'death': //英語のみ
+            text = data.text;
+            break;
+    }
+
+    return text;
 }

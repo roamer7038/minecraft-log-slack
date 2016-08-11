@@ -1,6 +1,6 @@
 {
   "name": "minecraft-log-slack",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "send minecraft's log to slack",
   "main": "send_slack.js",
   "scripts": {
