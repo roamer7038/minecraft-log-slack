@@ -1,6 +1,5 @@
 'use strict';
 const Slack = require('./../lib/post-slack');
-const slackApiKey = '';
 
 let log = {
     'join': '[18:38:21] [Server thread/INFO]: roamer7038 joined the game',
@@ -19,7 +18,7 @@ let log = {
 
 
 
-const slack = new Slack('log', slackApiKey, 'ja');
+const slack = new Slack(null, null, 'ja');
 
 
 console.log(`

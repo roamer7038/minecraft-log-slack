@@ -12,7 +12,8 @@ const slack = new Slack('log', slackApiKey, 'ja');
 
 // ログ監視
 tail.on('line', (data)=> {
-    console.log(slack.postMessage(data));
+    let post = slack.postMessage(data);
+    if(post) console.log(post);
 });
 
 tail.on('error', (data)=> {
