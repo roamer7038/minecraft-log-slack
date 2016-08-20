@@ -12,6 +12,7 @@ let log = {
     'chat': '[18:38:34] [Server thread/INFO]: <roamer7038> チャットテスト',
     'death1': '[18:38:34] [Server thread/INFO]: roamer7038 died',
     'death2': '[18:38:34] [Server thread/INFO]: roamer7038 tried to swim in lava while trying to escape Creeper',
+    'death3': '[13:30:54] [Server thread/INFO]: kabanba was shot by kabanba using [[天眸]二王弓・紅天]',
     'other1': '[06:09:44] [Server thread/INFO]: Starting minecraft server version 1.10.2',
     'other2': '[21:13:01] [Server thread/INFO]: Toggled downfall',
     'test': 'Test Message'
@@ -29,5 +30,5 @@ console.log(`
 ========= PostMessage =========
                                `);
 for(let key in log) {
-    console.log(key +' : '+ slack.postMessage(log[key]));
+    console.log(key + ' : ' + slack.postMessage(log[key]));
 }
