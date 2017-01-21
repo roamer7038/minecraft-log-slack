@@ -1,20 +1,17 @@
 {
   "name": "minecraft-log-slack",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "send minecraft's log to slack",
   "main": "index.js",
+  "engines": {
+    "node": "4.x"
+  },
   "scripts": {
-    "test": "node index.js",
-    "start": "pm2 start index.js",
-    "stop": "pm2 stop index.js",
-    "restart": "pm2 restart index.js",
-    "watch": "pm2 start index.js --watch",
-    "pm2": "pm2"
+    "test": "node index.js"
   },
   "author": "roamer7038",
   "license": "MIT",
   "dependencies": {
-    "pm2": "^1.1.3",
     "request": "^2.74.0",
     "tail": "^1.1.1"
   },
