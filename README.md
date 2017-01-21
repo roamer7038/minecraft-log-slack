@@ -16,13 +16,13 @@
 
 `sudo npm install pm2 -g`
 
- 自動起動の登録
+ pm2の自動起動
 
 `sudo pm2 startup centos`
 
  pm2 にスクリプトを登録
 
-`sudo pm2 start app.js`
+`sudo pm2 start index.js`
 
 ## License
 MIT
