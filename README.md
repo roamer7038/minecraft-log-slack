@@ -1,2 +1,0 @@
-# Minecraft-Log-Slack
-Minecraftのログを監視してSlackに通知する
